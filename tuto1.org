@@ -1,0 +1,119 @@
+* Regex Tutorial 1
+
+** TODO Introduction
+
+   If you ever wanted to learn an exoctic language...
+   In this tutorial you will learn to write stuff like this:
+
+   #+BEGIN_SRC python
+   r"https?://(?:(?:www)|(?:embed))?\.novamov.com/(?:(?:video/)|(?:embed\.php\?v\=))(?P<id>\w+)"
+   #+END_SRC
+
+*** TODO What is regular expression?
+
+    Regular expressions (called REs, or regexes, or regex patterns) are essentially a tiny,
+    highly specialized programming language embedded inside Perl/Python/Ruby/Lisp/Java and
+    other programming languages.
+
+    Using this little language, you specify the rules for the set of possible strings that
+    you want to match; this set might contain English sentences, or e-mail addresses, or
+    TeX commands, or anything you like.
+    You can also use REs to modify a string or to split it apart in various ways.
+
+    For a detailed explanation of the computer science underlying regular expressions
+    (deterministic and non-deterministic finite automata), you can refer to almost any
+    textbook on writing compilers. (We have the Dragon Book in portuguese at the office)
+
+
+** TODO Simple Patterns
+
+   Since regular expressions are used to operate on strings, we’ll begin with the most common
+   task: matching characters.
+
+*** TODO Matching Characters
+
+    Most letters and characters will simply match themselves. For example, the regular expression
+    r"test" will match the string "test" exactly.
+
+    However some characters doesn't match themselves, instead they signal that something /out-of-ordinary/
+    should be matched. Those are the most confusing part of regular expressions.
+    They are called metacharacters
+
+    here is the complete list of Metacharacters
+
+    #+BEGIN_SRC python
+    r". ^ $ * + ? { } [ ] \ | ( )"
+    #+END_SRC
+
+***** [ ]
+
+      They’re used for specifying a character class, which is a set of characters that you wish to match.
+
+      examples:
+
+      | class | will match...                                 |
+      |-------+-----------------------------------------------|
+      | [abc] | any of the characters "a", "b", or "c";       |
+
+      Using dashes you build ranges
+
+      | class | will match...                  |
+      |-------+--------------------------------|
+      | [a-c] | any character from a to c;     |
+      | [a-z] | any character from "a" to "z"; |
+
+      Metacharacters are not active inside classes
+
+      | class  | will match...                                |
+      |--------+----------------------------------------------|
+      | [akm$] | any of the characters 'a', 'k', 'm', or '$'; |
+      | [xy*]  | any of the characters 'x', 'y', or '*';      |
+
+      NOTE: that '$' is usually a metacharacter, but inside a character class it’s stripped of its special nature.
+
+      You can match the characters not listed within the class by complementing the set.
+      This is indicated by including a '^' as the first character of the class;
+
+      | class  | will match...                           |
+      |--------+-----------------------------------------|
+      | [^5]   | any character except '5';               |
+      | [^a-z] | any non lower case character;           |
+      | [xy*]  | any of the characters 'x', 'y', or '*'; |
+
+***** Special sequences
+
+    | Sequence | Description                             | Equivalent using classes |
+    |----------+-----------------------------------------+--------------------------|
+    | \d       | Matches any decimal digit;              | [0-9]                   |
+    | \D       | Matches any non-digit character;        | [^0-9]                  |
+    | \s       | Matches any whitespace character;       | [ \t\n\r\f\v]           |
+    | \S       | Matches any non-whitespace character;   | [^ \t\n\r\f\v]          |
+    | \w       | Matches any alphanumeric character;     | [a-zA-Z0-9_]            |
+    | \W       | Matches any non-alphanumeric character; | [^a-zA-Z0-9_]           |
+
+*** TODO Repeating Things
+
+** TODO Using Regular Expressions
+*** TODO Compiling Regular Expressions
+*** TODO The Backslash Plague
+*** TODO Performing Matches
+*** TODO Module-Level Functions
+*** TODO Compilation Flags
+
+** TODO More Pattern Power
+*** TODO More Metacharacters
+*** TODO Grouping
+*** TODO Non-capturing and Named Groups
+*** TODO Lookahead Assertions
+
+** TODO Modifying Strings
+*** TODO Splitting Strings
+*** TODO Search and Replace
+
+** TODO Common Problems
+*** TODO Use String Methods
+*** TODO match() versus search()
+*** TODO Greedy versus Non-Greedy
+*** TODO Using re.VERBOSE
+
+** TODO Feedback
