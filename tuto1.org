@@ -1,6 +1,6 @@
 * Regex Tutorial 1
 
-** 1) Introduction
+** TODO 1) Introduction
 
    If you ever wanted to learn an exoctic language...
    In this tutorial you will learn to write stuff like this:
@@ -25,7 +25,7 @@
     textbook on writing compilers. (We have the Dragon Book in portuguese at the office)
 
 
-** 2) Simple Patterns
+** TODO 2) Simple Patterns
 
    Since regular expressions are used to operate on strings, we’ll begin with the most common
    task: matching characters.
@@ -129,6 +129,10 @@
       Note that repetions such as '*' /greedy/; when repeating a RE,
       the matching engine will try to repeat it as many times as possible. more info later... :)
 
+      #+BEGIN_SRC python
+      re.match(r'".*"', '<a href="http://google.com"></a> some text here <a href="http://github.com"</a>')
+      #+END_SRC
+
 ***** '+'
 
       Another repeating metacharacter is +, which matches one or more times.
@@ -182,7 +186,7 @@
       TIP: It’s better to use *, +, or ? when you can, simply because they’re shorter and easier to read.
 
 
-** 3) More Pattern Power
+** TODO 3) More Pattern Power
 
 *** More Metacharacters
 
@@ -244,7 +248,7 @@
       Another zero-width assertion, this is the opposite of \b,
       only matching when the current position is not at a word boundary.
 
-*** DONE Grouping
+*** Grouping
 
     Groups are marked by the '(', ')' metacharacters. '(' and ')' have much the same meaning as they do in mathematical expressions;
     they group together the expressions contained inside them, and you can repeat the contents of a group
@@ -292,9 +296,43 @@
     + (?=foo) is one thing (a positive lookahead assertion)
     + (?:foo) is something else (a non-capturing group containing the subexpression foo).
 
-***** TODO Examples
+***** (?:) Non capturing groups
+
+      If you dont want to capture a group. It is useful to make cleaner regexes
+
+      #+Begin_SRC python
+      re.search(r'(?:https|git)://(.*?)/', 'https://github.com/marcwebbie/').group(1)
+      # ==> 'github.com'
+      #+END_SRC
+
+***** (?P<name>) Named groups
+
+      If you want to refer to groups by name instead of indexes
+
+      #+Begin_SRC python
+      p = re.compile(r'(?P<protocol>https?|git)://(?P<host>.*?)/(?P<username>\w+)/(?P<repo>\w+)/?')
+      p.search("https://github.com/alabeduarte/portaljavabahia").group("protocol") # ==> 'https'
+      p.search("https://github.com/alabeduarte/portaljavabahia").group("host")     # ==> 'github.com'
+      p.search("https://github.com/alabeduarte/portaljavabahia").group("username") # ==> 'alabeduarte'
+      p.search("https://github.com/alabeduarte/portaljavabahia").group("repo")     # ==> 'portaljavabahia'
+      #+END_SRC
 
 *** TODO Lookahead Assertions
+
+    Lookahead assertions are available in both positive and negative form, and look like this:
+
+***** (?=...)
+
+    Positive lookahead assertion. This succeeds if the contained regular expression, represented here by ...,
+    successfully matches at the current location, and fails otherwise.
+    But, once the contained expression has been tried, the matching engine doesn’t advance at all;
+    the rest of the pattern is tried right where the assertion started.
+
+***** (?!...)
+
+    Negative lookahead assertion. This is the opposite of the positive assertion;
+    it succeeds if the contained expression doesn’t match at the current position in the string.
+
 *** TODO Decrypting a regular expression
 
 
