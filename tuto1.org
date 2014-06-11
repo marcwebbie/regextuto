@@ -182,17 +182,71 @@
       TIP: It’s better to use *, +, or ? when you can, simply because they’re shorter and easier to read.
 
 
-** TODO 3) More Pattern Power
+** 3) More Pattern Power
 
-*** TODO More Metacharacters
+*** More Metacharacters
 
 ***** '|'
+
+      Alternation, or the “or” operator. If A and B are regular expressions,
+      A|B will match any string that matches either A or B.
+
 ***** '^'
+
+      Matches at the beginning of lines.
+
 ***** '$'
+
+      Matches at the end of a line, which is defined as either the end of the string,
+      or any location followed by a newline character.
+
+      #+BEGIN_SRC python
+      print(re.search('}$', '{block}'))
+      # ==> <_sre.SRE_Match object; span=(6, 7), match='}'>
+      print(re.search('}$', '{block} '))
+      # ==> None
+      print(re.search('}$', '{block}\n'))
+      # ==> <_sre.SRE_Match object; span=(6, 7), match='}'>
+      #+END_SRC
+
 ***** '\A'
+
+      Matches only at the start of the string.
+
+      #+BEGIN_SRC python
+
+      #+END_SRC
+
 ***** '\Z'
+
+      Matches only at the end of the string.
+      #+BEGIN_SRC python
+
+      #+END_SRC
+
 ***** '\b'
+
+      Word boundary. This is a zero-width assertion that matches only at the beginning or end of a word.
+      A word is defined as a sequence of alphanumeric characters,
+      so the end of a word is indicated by whitespace or a non-alphanumeric character.
+
+      #+BEGIN_SRC python
+      p = re.compile(r'\bclass\b')
+      print(p.search('no class at all'))
+      # ==> <_sre.SRE_Match object; span=(3, 8), match='class'>
+
+      print(p.search('the declassified algorithm'))
+      # ==> None
+
+      print(p.search('one subclass is'))
+      # ==> None
+
+      #+END_SRC
+
 ***** '\B'
+
+      Another zero-width assertion, this is the opposite of \b,
+      only matching when the current position is not at a word boundary.
 
 *** TODO Grouping
 
