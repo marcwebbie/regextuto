@@ -187,8 +187,7 @@
 
 
 ** TODO 3) More Pattern Power
-
-*** More Metacharacters
+*** TODO More Metacharacters
 
 ***** '|'
 
@@ -248,13 +247,13 @@
       Another zero-width assertion, this is the opposite of \b,
       only matching when the current position is not at a word boundary.
 
-*** Grouping
+*** TODO Grouping
 
     Groups are marked by the '(', ')' metacharacters. '(' and ')' have much the same meaning as they do in mathematical expressions;
     they group together the expressions contained inside them, and you can repeat the contents of a group
     with a repeating qualifier, such as *, +, ?, or {m,n}. For example, (ab)* will match zero or more repetitions of ab.
 
-***** DONE Examples
+***** TODO Examples
 
       #+BEGIN_SRC python
       p = re.compile("(https?|git)://([\w.]+)/?")
@@ -335,25 +334,6 @@
 
 *** TODO Decrypting a regular expression
 
-
-** TODO 4) Using Regular Expressions
-
-*** TODO Compiling Regular Expressions
-*** TODO The Backslash Plague
-*** TODO Performing Matches
-*** TODO Module-Level Functions
-*** TODO Compilation Flags
-
-** TODO 5) Modifying Strings
-
-*** TODO Splitting Strings
-*** TODO Search and Replace
-
-** TODO 6) Common Problems
-
-*** TODO Use String Methods
-*** TODO match() versus search()
-*** TODO Greedy versus Non-Greedy
-*** TODO Using re.VERBOSE
-
-** TODO Feedback
+    #+BEGIN_src python
+    "^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
+    #+END_src python

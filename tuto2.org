@@ -1,0 +1,21 @@
+** TODO 4) Using Regular Expressions
+
+*** TODO Compiling Regular Expressions
+*** TODO The Backslash Plague
+*** TODO Performing Matches
+*** TODO Module-Level Functions
+*** TODO Compilation Flags
+
+** TODO 5) Modifying Strings
+
+*** TODO Splitting Strings
+*** TODO Search and Replace
+
+** TODO 6) Common Problems
+
+*** TODO Use String Methods
+*** TODO match() versus search()
+*** TODO Greedy versus Non-Greedy
+*** TODO Using re.VERBOSE
+
+** TODO Feedback
