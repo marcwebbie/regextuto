@@ -41,9 +41,13 @@
 
     here is the complete list of Metacharacters
 
-    #+BEGIN_SRC python
+    #+begin_src python :results output
     r". ^ $ * + ? { } [ ] \ | ( )"
-    #+END_SRC
+    print("hello")
+    #+end_src
+
+    #+RESULTS:
+    : hello
 
 ***** '[ ]'
 
@@ -127,11 +131,32 @@
       | caaat | (3 'a' characters) |
 
       Note that repetions such as '*' /greedy/; when repeating a RE,
-      the matching engine will try to repeat it as many times as possible. more info later... :)
+      the matching engine will try to repeat it as many times as possible.
 
-      #+BEGIN_SRC python
-      re.match(r'".*"', '<a href="http://google.com"></a> some text here <a href="http://github.com"</a>')
+      Suppose we want to match a string enclosed in double quotes we could try something like this:
+
+      #+BEGIN_SRC python :results output
+      import re
+
+      pattern = re.compile(r'".*"')
+      print(pattern.search ('<a href="http://google.com"></a> some text here <a href="http://github.com"</a>').group(0))
       #+END_SRC
+
+      #+RESULTS:
+      : "http://google.com"></a> some text here <a href="http://github.com"
+
+      To use use the non greed version and match only the first string we should use the non greedy version
+      of the metacharacter. To make the character non greed you append a '?' after it example:
+
+      #+BEGIN_SRC python :results output
+      import re
+
+      pattern = re.compile(r'".*?"') # <== notice the question mark here
+      print(pattern.search ('<a href="http://google.com"></a> some text here <a href="http://github.com"</a>').group(0))
+      #+END_SRC
+
+      #+RESULTS:
+      : "http://google.com"
 
 ***** '+'
 
