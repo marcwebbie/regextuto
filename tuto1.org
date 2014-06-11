@@ -232,15 +232,11 @@
 
       #+BEGIN_SRC python
       p = re.compile(r'\bclass\b')
-      print(p.search('no class at all'))
-      # ==> <_sre.SRE_Match object; span=(3, 8), match='class'>
+      print(p.search('no class at all'))            # ==> <_sre.SRE_Match object; span=(3, 8), match='class'>
 
-      print(p.search('the declassified algorithm'))
-      # ==> None
+      print(p.search('the declassified algorithm')) # ==> None
 
-      print(p.search('one subclass is'))
-      # ==> None
-
+      print(p.search('one subclass is'))            # ==> None
       #+END_SRC
 
 ***** '\B'
@@ -248,15 +244,59 @@
       Another zero-width assertion, this is the opposite of \b,
       only matching when the current position is not at a word boundary.
 
-*** TODO Grouping
+*** DONE Grouping
 
     Groups are marked by the '(', ')' metacharacters. '(' and ')' have much the same meaning as they do in mathematical expressions;
     they group together the expressions contained inside them, and you can repeat the contents of a group
     with a repeating qualifier, such as *, +, ?, or {m,n}. For example, (ab)* will match zero or more repetitions of ab.
 
+***** DONE Examples
+
+      #+BEGIN_SRC python
+      p = re.compile("(https?|git)://([\w.]+)/?")
+
+      p.match("https://github.com/").group(0) # ==> "https://github.com/"
+      p.match("https://github.com/").group(1) # ==> "https"
+      p.match("https://github.com/").group(2) # ==> "github.com"
+      p.match("https://github.com/").group(3) # ==> raises IndexError
+      #+END_SRC
+
+      Subgroups. Just count the opening parenthesis
+
+      #+BEGIN_SRC python
+      p = re.compile('(a(b)c)d')
+      m = p.match('abcd')
+      m.group(0) # ==> 'abcd'
+
+      m.group(1) # ==> 'abc'
+
+      m.group(2) # ==> 'b'
+      #+END_SRC
+
+      For example, the following RE detects doubled words in a string.
+
+      #+BEGIN_SRC python
+      p = re.compile(r'(\b\w+)\s+\1')
+      p.search('Paris in the the spring').group() # ==> 'the the'
+      #+END_SRC
+
 *** TODO Non-capturing and Named Groups
+
+    Perl 5 is well-known for its powerful additions to standard regular expressions.
+    For these new features the Perl developers couldn’t choose new single-keystroke metacharacters or
+    new special sequences beginning with \ without making Perl’s regular expressions confusingly different from standard REs.
+
+    The solution chosen by the Perl developers was to use (?...) as the extension syntax.
+    The characters immediately after the ? indicate what extension is being used so
+
+    + (?=foo) is one thing (a positive lookahead assertion)
+    + (?:foo) is something else (a non-capturing group containing the subexpression foo).
+
+***** TODO Examples
+
 *** TODO Lookahead Assertions
 *** TODO Decrypting a regular expression
+
 
 ** TODO 4) Using Regular Expressions
 
