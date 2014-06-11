@@ -1,6 +1,6 @@
 * Regex Tutorial 1
 
-** TODO Introduction
+** TODO 1) Introduction
 
    If you ever wanted to learn an exoctic language...
    In this tutorial you will learn to write stuff like this:
@@ -25,7 +25,7 @@
     textbook on writing compilers. (We have the Dragon Book in portuguese at the office)
 
 
-** TODO Simple Patterns
+** TODO 2) Simple Patterns
 
    Since regular expressions are used to operate on strings, we’ll begin with the most common
    task: matching characters.
@@ -45,7 +45,7 @@
     r". ^ $ * + ? { } [ ] \ | ( )"
     #+END_SRC
 
-***** [ ]
+***** '[ ]'
 
       They’re used for specifying a character class, which is a set of characters that you wish to match.
 
@@ -78,22 +78,110 @@
       |--------+-----------------------------------------|
       | [^5]   | any character except '5';               |
       | [^a-z] | any non lower case character;           |
-      | [xy*]  | any of the characters 'x', 'y', or '*'; |
 
-***** Special sequences
+***** '\'
 
-    | Sequence | Description                             | Equivalent using classes |
-    |----------+-----------------------------------------+--------------------------|
-    | \d       | Matches any decimal digit;              | [0-9]                   |
-    | \D       | Matches any non-digit character;        | [^0-9]                  |
-    | \s       | Matches any whitespace character;       | [ \t\n\r\f\v]           |
-    | \S       | Matches any non-whitespace character;   | [^ \t\n\r\f\v]          |
-    | \w       | Matches any alphanumeric character;     | [a-zA-Z0-9_]            |
-    | \W       | Matches any non-alphanumeric character; | [^a-zA-Z0-9_]           |
+      The most important metacharacter is '\' in string literals , the backslash can be followed by
+      various characters to signal various special sequences.
+      It’s also used to escape all the metacharacters so you can still match them in patterns;
+
+      | class  | will match... |
+      |--------+---------------|
+      | \[     | '[';          |
+      | \\     | '\\';         |
+
+      Some of the special sequences beginning with '\' represent predefined sets of characters that are often useful, such as the set of digits, the set of letters, or the set of anything that isn’t whitespace.
+
+***** Most used special sequences
+
+      | Sequence | Description                             | Equivalent using classes |
+      |----------+-----------------------------------------+--------------------------|
+      | \d       | Matches any decimal digit;              | [0-9]                    |
+      | \D       | Matches any non-digit character;        | [^0-9]                   |
+      | \s       | Matches any whitespace character;       | [ \t\n\r\f\v]            |
+      | \S       | Matches any non-whitespace character;   | [^ \t\n\r\f\v]           |
+      | \w       | Matches any alphanumeric character;     | [a-zA-Z0-9_]             |
+      | \W       | Matches any non-alphanumeric character; | [^a-zA-Z0-9_]            |
+
+      NOTE: These sequences can be included inside a character class.
+      For example, [\s,.] is a character class that will match any whitespace character, or ',' or '.'.
+
+***** '.'
+
+       It matches anything except a newline character. '.' is often used where you want to match “any character”.
 
 *** TODO Repeating Things
 
-** TODO Using Regular Expressions
+    Being able to match varying sets of characters is one of the best things in regular expressions can do.
+    Another capability is that you can specify that portions of the RE must be repeated a certain number of times.
+
+***** '*'
+
+      '*' doesn’t match the literal character *; instead,
+      it specifies that the previous character can be matched zero or more times, instead of exactly once.
+
+      Example the regex "ca*t" will match...
+
+      | ct    | (0 'a' characters) |
+      | cat   | (1 'a' characters) |
+      | caaat | (3 'a' characters) |
+
+      Note that repetions such as '*' /greedy/; when repeating a RE,
+      the matching engine will try to repeat it as many times as possible. more info later... :)
+
+***** '+'
+
+      Another repeating metacharacter is +, which matches one or more times.
+      Pay careful attention to the difference between * and +; * matches zero or more times,
+      so whatever’s being repeated may not be present at all, while + requires at least one occurrence.
+
+      To use a similar example, ca+t will match cat (1 a), caaat (3 a‘s), but won’t match ct.
+
+      | cat   | (1 'a' characters) |
+      | caaat | (3 'a' characters) |
+
+      but it won't match
+      | ct    | (0 'a' characters) |
+
+***** '?'
+
+      The question mark character, ?, matches either once or zero times;
+      you can think of it as marking something as being optional.
+
+      For example, 'home-?brew' matches ...
+
+      | homebrew  | (0 '-' characters |
+      | home-brew | (1 '-' characters |
+
+      It won't match:
+
+      | home----brew | (several '-' characters) |
+
+***** '{ }'
+
+      The most complex one is the '{m,n}'. We can call its arguments like this
+
+      + m => The least number of repetitions
+      + n => The most number of repetitions
+
+      For example the regex 'xy{0,3}z' will match...
+
+      | xz    | (0 'y' characters) |
+      | xyz   | (1 'y' characters) |
+      | xyyz  | (2 'y' characters) |
+      | xyyyz | (3 'y' characters) |
+
+      NOTE: That the three other qualifiers can all be expressed using this notation.
+
+      | Brackets metacharacter | equivalent to |
+      |------------------------+---------------|
+      | {0,}                   | '*'           |
+      | {1,}                   | '+'           |
+      | {0,1}                  | '?'           |
+
+      TIP: It’s better to use *, +, or ? when you can, simply because they’re shorter and easier to read.
+
+** TODO 3) Using Regular Expressions
 *** TODO Compiling Regular Expressions
 *** TODO The Backslash Plague
 *** TODO Performing Matches
