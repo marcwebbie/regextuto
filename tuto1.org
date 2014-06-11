@@ -1,6 +1,6 @@
 * Regex Tutorial 1
 
-** TODO 1) Introduction
+** 1) Introduction
 
    If you ever wanted to learn an exoctic language...
    In this tutorial you will learn to write stuff like this:
@@ -25,12 +25,12 @@
     textbook on writing compilers. (We have the Dragon Book in portuguese at the office)
 
 
-** TODO 2) Simple Patterns
+** 2) Simple Patterns
 
    Since regular expressions are used to operate on strings, we’ll begin with the most common
    task: matching characters.
 
-*** TODO Matching Characters
+*** Matching Characters
 
     Most letters and characters will simply match themselves. For example, the regular expression
     r"test" will match the string "test" exactly.
@@ -110,7 +110,7 @@
 
        It matches anything except a newline character. '.' is often used where you want to match “any character”.
 
-*** TODO Repeating Things
+*** Repeating Things
 
     Being able to match varying sets of characters is one of the best things in regular expressions can do.
     Another capability is that you can specify that portions of the RE must be repeated a certain number of times.
@@ -181,24 +181,44 @@
 
       TIP: It’s better to use *, +, or ? when you can, simply because they’re shorter and easier to read.
 
-** TODO 3) Using Regular Expressions
+
+** TODO 3) More Pattern Power
+
+*** TODO More Metacharacters
+
+***** '|'
+***** '^'
+***** '$'
+***** '\A'
+***** '\Z'
+***** '\b'
+***** '\B'
+
+*** TODO Grouping
+
+    Groups are marked by the '(', ')' metacharacters. '(' and ')' have much the same meaning as they do in mathematical expressions;
+    they group together the expressions contained inside them, and you can repeat the contents of a group
+    with a repeating qualifier, such as *, +, ?, or {m,n}. For example, (ab)* will match zero or more repetitions of ab.
+
+*** TODO Non-capturing and Named Groups
+*** TODO Lookahead Assertions
+*** TODO Decrypting a regular expression
+
+** TODO 4) Using Regular Expressions
+
 *** TODO Compiling Regular Expressions
 *** TODO The Backslash Plague
 *** TODO Performing Matches
 *** TODO Module-Level Functions
 *** TODO Compilation Flags
 
-** TODO More Pattern Power
-*** TODO More Metacharacters
-*** TODO Grouping
-*** TODO Non-capturing and Named Groups
-*** TODO Lookahead Assertions
+** TODO 5) Modifying Strings
 
-** TODO Modifying Strings
 *** TODO Splitting Strings
 *** TODO Search and Replace
 
-** TODO Common Problems
+** TODO 6) Common Problems
+
 *** TODO Use String Methods
 *** TODO match() versus search()
 *** TODO Greedy versus Non-Greedy
