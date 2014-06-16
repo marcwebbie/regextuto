@@ -2,8 +2,8 @@
 
 ** DONE 1) Introduction
 
-   If you ever wanted to learn an exoctic language...
-   In this tutorial you will learn to write stuff like this:
+If you ever wanted to learn an exoctic language...
+In this tutorial you will learn to write stuff like this:
 
 #+BEGIN_SRC python
 "https?://(?:(?:www)|(?:embed))?\.novamov.com/(?:(?:video/)|(?:embed\.php\?v\=))(?P<id>\w+)"
@@ -11,271 +11,294 @@
 
 *** What is regular expression?
 
-    Regular expressions (called REs, or regexes, or regex patterns) are essentially a tiny,
-    highly specialized programming language embedded inside Perl/Python/Ruby/Lisp/Java and
-    other programming languages.
+Regular expressions (called REs, or regexes, or regex patterns) are essentially a tiny,
+highly specialized programming language embedded inside Perl/Python/Ruby/Lisp/Java and
+other programming languages.
 
-    Using this little language, you specify the rules for the set of possible strings that
-    you want to match; this set might contain English sentences, or e-mail addresses, or
-    TeX commands, or anything you like.
-    You can also use REs to modify a string or to split it apart in various ways.
+Using this little language, you specify the rules for the set of possible strings that
+you want to match; this set might contain English sentences, or e-mail addresses, or
+TeX commands, or anything you like.
+You can also use REs to modify a string or to split it apart in various ways.
 
-    For a detailed explanation of the computer science underlying regular expressions
-    (deterministic and non-deterministic finite automata), you can refer to almost any
-    textbook on writing compilers. (We have the Dragon Book in portuguese at the office)
+For a detailed explanation of the computer science underlying regular expressions
+(deterministic and non-deterministic finite automata), you can refer to almost any
+textbook on writing compilers. (We have the Dragon Book in portuguese at the office)
 
 ** TODO 2) Simple Patterns
 
-   Since regular expressions are used to operate on strings, we’ll begin with the most common
-   task: matching characters.
+Since regular expressions are used to operate on strings, we’ll begin with the most common
+task: matching characters.
 
 *** Matching Characters
 
-    Most letters and characters will simply match themselves. For example, the regular expression
-    r"test" will match the string "test" exactly.
+Most letters and characters will simply match themselves. For example, the regular expression
+r"test" will match the string "test" exactly.
 
-    However some characters doesn't match themselves, instead they signal that something /out-of-ordinary/
-    should be matched. Those are the most confusing part of regular expressions.
-    They are called metacharacters
+However some characters doesn't match themselves, instead they signal that something /out-of-ordinary/
+should be matched. Those are the most confusing part of regular expressions.
+They are called metacharacters
 
-    here is the complete list of Metacharacters
+here is the complete list of Metacharacters
 
-    #+begin_src python
-    ". ^ $ * + ? { } [ ] \ | ( )"
-    #+end_src
+#+begin_src python
+". ^ $ * + ? { } [ ] \ | ( )"
+#+end_src
 
 **** '[ ]'
 
-     They’re used for specifying a character class, which is a set of characters that you wish to match.
+They’re used for specifying a character class, which is a set of characters that you wish to match.
 
-     examples:
+examples:
 
-     | class | will match...                                 |
-     |-------+-----------------------------------------------|
-     | [abc] | any of the characters "a", "b", or "c";       |
+| class | will match...                                 |
+|-------+-----------------------------------------------|
+| [abc] | any of the characters "a", "b", or "c";       |
 
-     Using dashes you build ranges
+Using dashes you build ranges
 
-     | class | will match...                  |
-     |-------+--------------------------------|
-     | [a-c] | any character from a to c;     |
-     | [a-z] | any character from "a" to "z"; |
+| class | will match...                  |
+|-------+--------------------------------|
+| [a-c] | any character from a to c;     |
+| [a-z] | any character from "a" to "z"; |
 
-     Metacharacters are not active inside classes
+Metacharacters are not active inside classes
 
-     | class  | will match...                                |
-     |--------+----------------------------------------------|
-     | [akm$] | any of the characters 'a', 'k', 'm', or '$'; |
-     | [xy*]  | any of the characters 'x', 'y', or '*';      |
+| class  | will match...                                |
+|--------+----------------------------------------------|
+| [akm$] | any of the characters 'a', 'k', 'm', or '$'; |
+| [xy*]  | any of the characters 'x', 'y', or '*';      |
 
-     NOTE: that '$' is usually a metacharacter, but inside a character class it’s stripped of its special nature.
+NOTE: that '$' is usually a metacharacter, but inside a character class it’s stripped of its special nature.
 
-     You can match the characters not listed within the class by complementing the set.
-     This is indicated by including a '^' as the first character of the class;
+You can match the characters not listed within the class by complementing the set.
+This is indicated by including a '^' as the first character of the class;
 
-     | class  | will match...                           |
-     |--------+-----------------------------------------|
-     | [^5]   | any character except '5';               |
-     | [^a-z] | any non lower case character;           |
+| class  | will match...                           |
+|--------+-----------------------------------------|
+| [^5]   | any character except '5';               |
+| [^a-z] | any non lower case character;           |
 
 **** '\'
 
-     The most important metacharacter is '\' in string literals , the backslash can be followed by
-     various characters to signal various special sequences.
-     It’s also used to escape all the metacharacters so you can still match them in patterns;
+The most important metacharacter is '\' in string literals , the backslash can be followed by
+various characters to signal various special sequences.
+It’s also used to escape all the metacharacters so you can still match them in patterns;
 
-     | class  | will match... |
-     |--------+---------------|
-     | \[     | '[';          |
-     | \\     | '\';          |
+| class  | will match... |
+|--------+---------------|
+| \[     | '[';          |
+| \\     | '\';          |
 
-     Some of the special sequences beginning with '\' represent predefined sets of characters that are often useful, such as the set of digits, the set of letters, or the set of anything that isn’t whitespace.
+Some of the special sequences beginning with '\' represent predefined sets of characters that are often useful, such as the set of digits, the set of letters, or the set of anything that isn’t whitespace.
 
 **** Most used special sequences
 
-     | Sequence | Description                             | Equivalent using classes |
-     |----------+-----------------------------------------+--------------------------|
-     | \d       | Matches any decimal digit;              | [0-9]                    |
-     | \D       | Matches any non-digit character;        | [^0-9]                   |
-     | \s       | Matches any whitespace character;       | [ \t\n\r\f\v]            |
-     | \S       | Matches any non-whitespace character;   | [^ \t\n\r\f\v]           |
-     | \w       | Matches any alphanumeric character;     | [a-zA-Z0-9_]             |
-     | \W       | Matches any non-alphanumeric character; | [^a-zA-Z0-9_]            |
+| Sequence | Description                             | Equivalent using classes |
+|----------+-----------------------------------------+--------------------------|
+| \d       | Matches any decimal digit;              | [0-9]                    |
+| \D       | Matches any non-digit character;        | [^0-9]                   |
+| \s       | Matches any whitespace character;       | [ \t\n\r\f\v]            |
+| \S       | Matches any non-whitespace character;   | [^ \t\n\r\f\v]           |
+| \w       | Matches any alphanumeric character;     | [a-zA-Z0-9_]             |
+| \W       | Matches any non-alphanumeric character; | [^a-zA-Z0-9_]            |
 
-     NOTE: These sequences can be included inside a character class.
-     For example, [\s,.] is a character class that will match any whitespace character, or ',' or '.'.
+NOTE: These sequences can be included inside a character class.
+For example, [\s,.] is a character class that will match any whitespace character, or ',' or '.'.
 
 **** '.'
 
-     It matches anything except a newline character. '.' is often used where you want to match “any character”.
+It matches anything except a newline character. '.' is often used where you want to match “any character”.
 
 *** Repeating Things
 
-    Being able to match varying sets of characters is one of the best things in regular expressions can do.
-    Another capability is that you can specify that portions of the RE must be repeated a certain number of times.
+Being able to match varying sets of characters is one of the best things in regular expressions can do.
+Another capability is that you can specify that portions of the RE must be repeated a certain number of times.
 
 **** '*'
 
-     '*' doesn’t match the literal character *; instead,
-     it specifies that the previous character can be matched zero or more times, instead of exactly once.
+'*' doesn’t match the literal character *; instead,
+it specifies that the previous character can be matched zero or more times, instead of exactly once.
 
-     Example the regex "ca*t" will match...
+Example the regex "ca*t" will match...
 
-     | ct    | (0 'a' characters) |
-     | cat   | (1 'a' characters) |
-     | caaat | (3 'a' characters) |
+| ct    | (0 'a' characters) |
+| cat   | (1 'a' characters) |
+| caaat | (3 'a' characters) |
 
-     Note that repetions such as '*' /greedy/; when repeating a RE,
-     the matching engine will try to repeat it as many times as possible.
+Note that repetions such as '*' /greedy/; when repeating a RE,
+the matching engine will try to repeat it as many times as possible.
 
-     Suppose we want to match a string enclosed in double quotes we could try something like this:
+Suppose we want to match a string enclosed in double quotes we could try something like this:
 
-     #+BEGIN_SRC python :results output
-     import re
+#+BEGIN_SRC python :results output
+import re
 
-     pattern = re.compile(r'<.*>')
-     print(pattern.search('<head></head><body><h1>Hello</h1></body>').group(0))
-     #+END_SRC
+p = re.compile(r'<.*>')
+print(p.search('<head></head><body><h1>Hello</h1></body>').group(0))
+#+END_SRC
 
-     #+RESULTS:
-     : <head></head><body><h1>Hello</h1></body>
+#+RESULTS:
+: <head></head><body><h1>Hello</h1></body>
 
-     To use use the non greed version and match only the first string we should use the non greedy version
-     of the metacharacter. To make the character non greed you append a '?' after it example:
+To use use the non greed version and match only the first string we should use the non greedy version
+of the metacharacter. To make the character non greed you append a '?' after it example:
 
-     #+BEGIN_SRC python :results output
-     import re
+#+BEGIN_SRC python :results output
+import re
 
-     pattern = re.compile(r'<.*?>')
-     print(pattern.search('<head></head><body><h1>Hello</h1></body>').group(0))
-     #+END_SRC
+p = re.compile(r'<.*?>')
+print(p.search('<head></head><body><h1>Hello</h1></body>').group(0))
+#+END_SRC
 
-     #+RESULTS:
-     : "http://google.com"
+#+RESULTS:
+: <head>
 
-***** '+'
+**** '+'
 
-      Another repeating metacharacter is +, which matches one or more times.
-      Pay careful attention to the difference between * and +; * matches zero or more times,
-      so whatever’s being repeated may not be present at all, while + requires at least one occurrence.
+Another repeating metacharacter is +, which matches one or more times.
+Pay careful attention to the difference between * and +; * matches zero or more times,
+so whatever’s being repeated may not be present at all, while + requires at least one occurrence.
 
-      To use a similar example, ca+t will match cat (1 a), caaat (3 a‘s), but won’t match ct.
+To use a similar example, ca+t will match cat (1 a), caaat (3 a‘s), but won’t match ct.
 
-      | cat   | (1 'a' characters) |
-      | caaat | (3 'a' characters) |
+| cat   | (1 'a' characters) |
+| caaat | (3 'a' characters) |
 
-      but it won't match
-      | ct    | (0 'a' characters) |
+but it won't match
+| ct    | (0 'a' characters) |
 
-***** '?'
+**** '?'
 
-      The question mark character, ?, matches either once or zero times;
-      you can think of it as marking something as being optional.
+The question mark character, ?, matches either once or zero times;
+you can think of it as marking something as being optional.
 
-      For example, 'home-?brew' matches ...
+For example, 'home-?brew' matches ...
 
-      | homebrew  | (0 '-' characters |
-      | home-brew | (1 '-' characters |
+| homebrew  | (0 '-' characters |
+| home-brew | (1 '-' characters |
 
-      It won't match:
+It won't match:
 
-      | home----brew | (several '-' characters) |
+| home----brew | (several '-' characters) |
 
-***** '{ }'
+**** '{ }'
 
-      The most complex one is the '{m,n}'. We can call its arguments like this
+The most complex one is the '{m,n}'. We can call its arguments like this
 
-      + m => The least number of repetitions
-      + n => The most number of repetitions
++ m => The least number of repetitions
++ n => The most number of repetitions
 
-      For example the regex 'xy{0,3}z' will match...
+For example the regex 'xy{0,3}z' will match...
 
-      | xz    | (0 'y' characters) |
-      | xyz   | (1 'y' characters) |
-      | xyyz  | (2 'y' characters) |
-      | xyyyz | (3 'y' characters) |
+| xz    | (0 'y' characters) |
+| xyz   | (1 'y' characters) |
+| xyyz  | (2 'y' characters) |
+| xyyyz | (3 'y' characters) |
 
-      NOTE: That the three other qualifiers can all be expressed using this notation.
+NOTE: That the three other qualifiers can all be expressed using this notation.
 
-      | Brackets metacharacter | equivalent to |
-      |------------------------+---------------|
-      | {0,}                   | '*'           |
-      | {1,}                   | '+'           |
-      | {0,1}                  | '?'           |
+| Brackets metacharacter | equivalent to |
+|------------------------+---------------|
+| {0,}                   | '*'           |
+| {1,}                   | '+'           |
+| {0,1}                  | '?'           |
 
-      TIP: It’s better to use *, +, or ? when you can, simply because they’re shorter and easier to read.
+TIP: It’s better to use *, +, or ? when you can, simply because they’re shorter and easier to read.
 
 
 ** 3) More Pattern Power
 *** More Metacharacters
 
-***** '|'
+**** '|'
 
-      Alternation, or the “or” operator. If A and B are regular expressions,
-      A|B will match any string that matches either A or B.
+Alternation, or the “or” operator. If A and B are regular expressions,
+A|B will match any string that matches either A or B.
 
-***** '^'
+**** '^'
 
-      Matches at the beginning of lines.
+Matches at the beginning of lines.
 
-***** '$'
+**** '$'
 
-      Matches at the end of a line, which is defined as either the end of the string,
-      or any location followed by a newline character.
+Matches at the end of a line, which is defined as either the end of the string,
+or any location followed by a newline character.
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output
+import re
 print(re.search('}$', '{block}'))
-# ==> <_sre.SRE_Match object; span=(6, 7), match='}'>
+#+END_SRC
+
+#+RESULTS:
+: <_sre.SRE_Match object at 0x7f2fc5ba2308>
+
+#+BEGIN_SRC python :results output
+import re
 print(re.search('}$', '{block} '))
-# ==> None
+#+END_SRC
+
+#+RESULTS:
+: None
+
+#+BEGIN_SRC python :results output
+import re
 print(re.search('}$', '{block}\n'))
-# ==> <_sre.SRE_Match object; span=(6, 7), match='}'>
 #+END_SRC
 
-***** '\A'
+#+RESULTS:
+: <_sre.SRE_Match object at 0x7fdd5e215308>
 
-      Matches only at the start of the string.
+**** '\A'
 
-#+BEGIN_SRC python
+Matches only at the start of the string.
 
+**** '\Z'
+
+Matches only at the end of the string.
+
+**** '\b'
+
+Word boundary. This is a zero-width assertion that matches only at the beginning or end of a word.
+A word is defined as a sequence of alphanumeric characters,
+so the end of a word is indicated by whitespace or a non-alphanumeric character.
+
+#+BEGIN_SRC python :results output
+import re
+print(re.search(r'\bclass\b', 'no class at all'))
 #+END_SRC
 
-***** '\Z'
+#+RESULTS:
+: <_sre.SRE_Match object at 0x7f1106d66308>
 
-      Matches only at the end of the string.
-#+BEGIN_SRC python
-
+#+BEGIN_SRC python :results output
+import re
+print(re.search(r'\bclass\b', 'the declassified algorithm'))
 #+END_SRC
 
-***** '\b'
+#+RESULTS:
+: None
 
-      Word boundary. This is a zero-width assertion that matches only at the beginning or end of a word.
-      A word is defined as a sequence of alphanumeric characters,
-      so the end of a word is indicated by whitespace or a non-alphanumeric character.
-
-#+BEGIN_SRC python
-p = re.compile(r'\bclass\b')
-print(p.search('no class at all'))            # ==> <_sre.SRE_Match object; span=(3, 8), match='class'>
-
-print(p.search('the declassified algorithm')) # ==> None
-
-print(p.search('one subclass is'))            # ==> None
+#+BEGIN_SRC python :results output
+import re
+print(re.search(r'\bclass\b', 'one subclass is'))
 #+END_SRC
 
-***** '\B'
+#+RESULTS:
+: None
 
-      Another zero-width assertion, this is the opposite of \b,
-      only matching when the current position is not at a word boundary.
+**** '\B'
+
+Another zero-width assertion, this is the opposite of \b,
+only matching when the current position is not at a word boundary.
 
 *** Grouping
 
-    Groups are marked by the '(', ')' metacharacters. '(' and ')' have much the same meaning as they do in mathematical expressions;
-    they group together the expressions contained inside them, and you can repeat the contents of a group
-    with a repeating qualifier, such as *, +, ?, or {m,n}. For example, (ab)* will match zero or more repetitions of ab.
+Groups are marked by the '(', ')' metacharacters. '(' and ')' have much the same meaning as they do in mathematical expressions;
+they group together the expressions contained inside them, and you can repeat the contents of a group
+with a repeating qualifier, such as *, +, ?, or {m,n}. For example, (ab)* will match zero or more repetitions of ab.
 
-***** TODO Examples
+**** TODO Examples
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results
 p = re.compile("(https?|git)://([\w.]+)/?")
 
 p.match("https://github.com/").group(0) # ==> "https://github.com/"
@@ -284,19 +307,16 @@ p.match("https://github.com/").group(2) # ==> "github.com"
 p.match("https://github.com/").group(3) # ==> raises IndexError
 #+END_SRC
 
-      Subgroups. Just count the opening parenthesis
+Subgroups. Just count the opening parenthesis
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results
 p = re.compile('(a(b)c)d')
-m = p.match('abcd')
-m.group(0) # ==> 'abcd'
-
-m.group(1) # ==> 'abc'
-
-m.group(2) # ==> 'b'
+p.match('abcd').group(0) # ==> 'abcd'
+p.match('abcd').group(1) # ==> 'abc'
+p.match('abcd').group(2) # ==> 'b'
 #+END_SRC
 
-      For example, the following RE detects doubled words in a string.
+For example, the following RE detects doubled words in a string.
 
 #+BEGIN_SRC python
 p = re.compile(r'(\b\w+)\s+\1')
@@ -305,28 +325,28 @@ p.search('Paris in the the spring').group() # ==> 'the the'
 
 *** Non-capturing and Named Groups
 
-    Perl 5 is well-known for its powerful additions to standard regular expressions.
-    For these new features the Perl developers couldn’t choose new single-keystroke metacharacters or
-    new special sequences beginning with \ without making Perl’s regular expressions confusingly different from standard REs.
+Perl 5 is well-known for its powerful additions to standard regular expressions.
+For these new features the Perl developers couldn’t choose new single-keystroke metacharacters or
+new special sequences beginning with \ without making Perl’s regular expressions confusingly different from standard REs.
 
-    The solution chosen by the Perl developers was to use (?...) as the extension syntax.
-    The characters immediately after the ? indicate what extension is being used so
+The solution chosen by the Perl developers was to use (?...) as the extension syntax.
+The characters immediately after the ? indicate what extension is being used so
 
 + (?=foo) is one thing (a positive lookahead assertion)
 + (?:foo) is something else (a non-capturing group containing the subexpression foo).
 
-***** (?:) Non capturing groups
+**** (?:) Non capturing groups
 
-      If you dont want to capture a group. It is useful to make cleaner regexes
+If you dont want to capture a group. It is useful to make cleaner regexes
 
 #+Begin_SRC python
 re.search(r'(?:https|git)://(.*?)/', 'https://github.com/marcwebbie/').group(1)
 # ==> 'github.com'
 #+END_SRC
 
-***** (?P<name>) Named groups
+**** (?P<name>) Named groups
 
-      If you want to refer to groups by name instead of indexes
+If you want to refer to groups by name instead of indexes
 
 #+Begin_SRC python
 p = re.compile(r'(?P<protocol>https?|git)://(?P<host>.*?)/(?P<username>\w+)/(?P<repo>\w+)/?')
@@ -338,19 +358,19 @@ p.search("https://github.com/alabeduarte/portaljavabahia").group("repo")     # =
 
 *** Lookahead Assertions
 
-    Lookahead assertions are available in both positive and negative form, and look like this:
+Lookahead assertions are available in both positive and negative form, and look like this:
 
-***** (?=...)
+**** (?=...)
 
-      Positive lookahead assertion. This succeeds if the contained regular expression, represented here by ...,
-      successfully matches at the current location, and fails otherwise.
-      But, once the contained expression has been tried, the matching engine doesn’t advance at all;
-      the rest of the pattern is tried right where the assertion started.
+Positive lookahead assertion. This succeeds if the contained regular expression, represented here by ...,
+successfully matches at the current location, and fails otherwise.
+But, once the contained expression has been tried, the matching engine doesn’t advance at all;
+the rest of the pattern is tried right where the assertion started.
 
-***** (?!...)
+**** (?!...)
 
-      Negative lookahead assertion. This is the opposite of the positive assertion;
-      it succeeds if the contained expression doesn’t match at the current position in the string.
+Negative lookahead assertion. This is the opposite of the positive assertion;
+it succeeds if the contained expression doesn’t match at the current position in the string.
 
 *** Decrypting a regular expression
 
